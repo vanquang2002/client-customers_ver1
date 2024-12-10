@@ -294,7 +294,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     await axios.delete(`${BASE_URL}/orderServices/${deleteService._id}`);
                     await axios.post(`${BASE_URL}/histories/BE`, { bookingId: bookingId, staffId: null, note: 'khách đã xóa dịch vụ' });
 
-                    const newNotification = { content: `${bookingId} khách đã xóa dịch vụ`,locationId:location };
+                    const newNotification = { content: `${bookingId} khách đã xóa dịch vụ`, locationId: location };
 
                     axios
                         .post(`${BASE_URL}/chats/send`, newNotification)
@@ -361,7 +361,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     await axios.delete(`${BASE_URL}/orderRooms/${OrderRoom._id}`)
                     await axios.post(`${BASE_URL}/histories/BE`, { bookingId: bookingId, staffId: null, note: 'khách đã hủy loại phòng' });
 
-                    const newNotification = { content: `${bookingId} khách đã hủy loại phòng`,locationId:location };
+                    const newNotification = { content: `${bookingId} khách đã hủy loại phòng`, locationId: location };
                     axios
                         .post(`${BASE_URL}/chats/send`, newNotification)
                         .then((response) => {
@@ -424,7 +424,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
 
             await axios.post(`${BASE_URL}/histories/BE`, { bookingId: bookingId, staffId: null, note: 'khách đã cập nhật thông tin phòng' });
 
-            const newNotification = { content: `${bookingId} khách đã cập nhật thông tin phòng`,locationId:location };
+            const newNotification = { content: `${bookingId} khách đã cập nhật thông tin phòng`, locationId: location };
             axios
                 .post(`${BASE_URL}/chats/send`, newNotification)
                 .then((response) => {
@@ -724,14 +724,14 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     Về Trang Chủ
                 </button>
 
-                <button
+                {!Agency && <button
                     className='bg-danger'
                     onClick={handleRefund}
                     disabled={isUpdating || !refundTimeOut || orderRooms[0].bookingId?.status !== 'Đã đặt'}
 
                 >
                     {isUpdating ? 'Đang cập nhật...' : 'Xác nhận Hủy Đơn'}
-                </button>
+                </button>}
 
 
             </div>
