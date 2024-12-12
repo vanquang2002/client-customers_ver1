@@ -513,7 +513,9 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
         <div >
             <ToastContainer />
             <section className="room-details">
-                <h3>Thông tin Phòng {!refundTimeOut && <span className='text-danger'>Đã hết thời gian hủy đơn và cập nhật phòng</span>} </h3>
+                <h3>Thông tin Phòng {(orderRooms[0].bookingId?.status !== "Đã đặt" && orderRooms[0].bookingId?.status !== "Đã check-in") ?
+                    (<span className='text-bg-secondary px-2'>{orderRooms[0].bookingId?.status}</span>)
+                    : (!refundTimeOut && <span className='text-danger'>Đã hết thời gian hủy đơn và cập nhật phòng</span>)} </h3>
 
                 <h3>Mã Đặt phòng: {orderRooms[0].bookingId?._id || 'N/A'} - Mã hợp đồng: {orderRooms[0].bookingId?.contract || 'N/A'}</h3>
                 <Row className="customer-info">
