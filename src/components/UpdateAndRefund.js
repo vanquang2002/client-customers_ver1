@@ -277,6 +277,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
         // Kiểm tra nếu dịch vụ được hủy trước ngày check-in 2 ngày
         if (daysBeforeCheckin >= 2) {
             if (window.confirm('Bạn có chắc muốn hủy dịch vụ này không?')) {
+                setIsUpdating(true);
                 // Xóa dịch vụ khỏi danh sách
                 const updatedServices = orderServices.filter((service) => service._id !== deleteService._id);
                 setOrderServices(updatedServices); // Cập nhật lại danh sách dịch vụ đã đặt
@@ -315,6 +316,8 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     toast.error('Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại.', {
                         position: "top-right",
                     });
+                } finally {
+                    setIsUpdating(false);
                 }
             }
         } else {
@@ -342,6 +345,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
         // Kiểm tra nếu phòng được hủy trước ngày check-in 2 ngày
         if (daysBeforeCheckin >= 2 && orderRooms.length > 1) {
             if (window.confirm('Bạn có chắc muốn hủy phòng này không?')) {
+                setIsUpdating(true);
                 // Xóa phòng khỏi danh sách
                 const updatedRooms = orderRooms.filter((room) => room._id !== OrderRoom._id);
                 setOrderRooms(updatedRooms); // Cập nhật lại danh sách phòng đã đặt
@@ -380,6 +384,8 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     toast.error('Không thể hủy phòng. Vui lòng thử lại.', {
                         position: "top-right",
                     });
+                } finally {
+                    setIsUpdating(false);
                 }
             };
         } else {
@@ -405,6 +411,7 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
     };
 
     const handleUpdateRoomAll = async () => {
+        setIsUpdating(true);
         try {
 
             // Cập nhật từng orderRoom với số lượng mới
@@ -448,6 +455,9 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                 position: "top-right",
             });
 
+        }
+        finally {
+            setIsUpdating(false);
         }
     };
 
@@ -574,7 +584,9 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                                 </td>
                                 {Agency && orderRooms[0]?.bookingId?.status === 'Đã đặt' && (
                                     <td>
-                                        <button onClick={() => handleDeleteOrderRoom(orderRoom)}>Xóa</button>
+                                        <button
+                                            disabled={isUpdating}
+                                            onClick={() => handleDeleteOrderRoom(orderRoom)}>{isUpdating ? 'Đang cập nhật...' : 'Xóa'}</button>
                                     </td>
                                 )}
                             </tr>
@@ -633,9 +645,9 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                     <Button
                         variant="success"
                         onClick={handleUpdateRoomAll}
-                    // disabled={totalPrice <= 0}
+                        disabled={isUpdating}
                     >
-                        Cập nhật ghi chú
+                        {isUpdating ? 'Đang cập nhật...' : 'Cập nhật ghi chú'}
                     </Button>
                 </section>}
 
@@ -672,10 +684,10 @@ const UpdateAndRefund = forwardRef(({ bookingId }, ref) => {
                                         <td>
                                             <Button
                                                 variant="danger"
-                                                disabled={service.status !== "Đã đặt" || (orderRooms[0].bookingId?.status !== 'Đã check-in' && orderRooms[0].bookingId?.status !== 'Đã đặt')}
+                                                disabled={isUpdating || service.status !== "Đã đặt" || (orderRooms[0].bookingId?.status !== 'Đã check-in' && orderRooms[0].bookingId?.status !== 'Đã đặt')}
                                                 onClick={() => handleCancelService(service, (service.otherServiceId.price * service.quantity))}
                                             >
-                                                Hủy Dịch Vụ
+                                                {isUpdating ? 'Đang cập nhật...' : 'Hủy Dịch Vụ'}
                                             </Button>
                                         </td>
                                     </tr>
