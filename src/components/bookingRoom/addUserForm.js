@@ -400,13 +400,13 @@ const AddUserForm = forwardRef(({ }, ref) => {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group controlId="agencyStk">
-                                        <Form.Label><strong>Ngân hàng + Số tài khoản (STK)</strong></Form.Label>
+                                        <Form.Label><strong>Ngân hàng: Số tài khoản</strong><br></br><small>VD: Ngân Hàng A: 12345678</small></Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="stk"
                                             value={agencyData.stk}
                                             onChange={handleAgencyChange}
-                                            placeholder="Nhập ngân hàng + STK"
+                                            placeholder="Nhập ngân hàng : STK"
                                             isInvalid={!!errors.agencyStk}
                                         />
                                         <Form.Control.Feedback type="invalid">
